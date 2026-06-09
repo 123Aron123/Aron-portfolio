@@ -1,0 +1,6 @@
+{
+  "name": "Personal Portfolio",
+  "description": "The personal portfolio website of Aron Gebru, a web-based designer and front-end developer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
