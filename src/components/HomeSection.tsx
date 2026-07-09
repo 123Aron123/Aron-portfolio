@@ -1,10 +1,6 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import { ArrowRight } from 'lucide-react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { personalInfo } from '../data';
 
 interface HomeSectionProps {
@@ -12,68 +8,194 @@ interface HomeSectionProps {
 }
 
 export default function HomeSection({ onNavigateToAbout }: HomeSectionProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [coords, setCoords] = useState({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Normalize coordinates around the center of the container
+    const width = rect.width;
+    const height = rect.height;
+    const xc = width / 2;
+    const yc = height / 2;
+    
+    // dx and dy ranging from -1 to 1
+    const dx = (x - xc) / xc;
+    const dy = (y - yc) / yc;
+    
+    // Apply degrees of rotation
+    const tiltMaxX = 14; 
+    const tiltMaxY = 14;
+    
+    // Update tilt coordinates and position of glare/shine effect
+    setCoords({
+      rotateX: -dy * tiltMaxY,
+      rotateY: dx * tiltMaxX,
+      glareX: (x / width) * 100,
+      glareY: (y / height) * 100,
+    });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setCoords({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50 });
+  };
+
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center py-24 md:py-0 overflow-hidden bg-[#F7F5F2] text-[#1A1A1A]">
-      {/* Background Graphic Watermark Word */}
-      <div className="absolute right-[5%] top-[180px] text-[18vw] font-bold serif opacity-[0.03] pointer-events-none select-none tracking-tighter leading-none hidden xl:block">
-        PROTOFOL
+    <section className="relative w-full min-h-screen flex items-center justify-center py-24 md:py-0 overflow-hidden bg-transparent text-[#F7F5F2]">
+      {/* Background Graphic Watermark Word - Orange Glow */}
+      <div className="absolute right-[5%] top-[180px] text-[18vw] font-bold serif opacity-[0.015] text-[#FF6B00] pointer-events-none select-none tracking-tighter leading-none hidden xl:block">
+        CREATIVE
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Portrait Image Block - Customized to match raw professional layout of Editorial theme */}
-          <div className="col-span-1 lg:col-span-5 flex justify-center lg:justify-start">
+          {/* Portrait Image Block - 3D Perspective tilt */}
+          <div 
+            className="col-span-1 lg:col-span-5 flex justify-center lg:justify-start"
+            style={{ perspective: 1200 }}
+          >
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="relative w-64 h-80 sm:w-80 sm:h-[420px] rounded-none overflow-visible shadow-xl border border-[#1A1A1A]/10 bg-[#1A1A1A]"
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              onMouseEnter={handleMouseEnter}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: `rotateX(${coords.rotateX}deg) rotateY(${coords.rotateY}deg)`,
+                transition: isHovered ? 'none' : 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
+              }}
+              className="relative w-64 h-80 sm:w-80 sm:h-[420px] rounded-2xl overflow-visible shadow-2xl glass-panel p-3 border-white/10 group cursor-pointer"
             >
-              <div className="absolute inset-0 overflow-hidden">
-                <img 
+              {/* Image Wrap */}
+              <div 
+                className="w-full h-full rounded-xl overflow-hidden relative bg-neutral-900"
+                style={{ 
+                  transform: 'translateZ(25px)', 
+                  transformStyle: 'preserve-3d',
+                  transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
+                }}
+              >
+                {/* Image loading indicator / Skeleton */}
+                <AnimatePresence>
+                  {!imageLoaded && (
+                    <motion.div 
+                      initial={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-neutral-950"
+                    >
+                      {/* Smooth themed loader ring */}
+                      <div className="relative w-12 h-12 flex items-center justify-center">
+                        <div className="absolute inset-0 rounded-full border-2 border-[#FF6B00]/10" />
+                        <motion.div 
+                          animate={{ rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                          className="absolute inset-0 rounded-full border-2 border-t-[#FF6B00] border-r-transparent border-b-transparent border-l-transparent"
+                        />
+                        <Sparkles className="w-4 h-4 text-[#FF6B00]/80 animate-pulse" />
+                      </div>
+                      <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-500 uppercase mt-3 animate-pulse">
+                        Rendering...
+                      </span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <motion.img 
                   src="/src/assets/images/aron_gebru_portrait_1781022828548.png"
                   alt="Aron Gebru portrait"
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  onLoad={() => setImageLoaded(true)}
+                  initial={{ scale: 1.15, filter: 'blur(10px)', opacity: 0 }}
+                  animate={imageLoaded ? { scale: isHovered ? 1.06 : 1, filter: 'blur(0px)', opacity: 1 } : {}}
+                  transition={{ 
+                    scale: { duration: 0.6, ease: 'easeOut' },
+                    filter: { duration: 0.8 },
+                    opacity: { duration: 0.6 }
+                  }}
+                  className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80';
+                    (e.target as HTMLImageElement).src = 'https://drive.google.com/file/d/1dh5gA51p79oHOsQCz8Ss18i_StLzc6lc/view?usp=drive_link';
+                    setImageLoaded(true);
+                  }}
+                />
+
+                {/* Subtle overlay on hover */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-t from-[#FF6B00]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
+                  style={{ transform: 'translateZ(10px)' }}
+                />
+
+                {/* Parallax dynamic spotlight glare following cursor */}
+                <div 
+                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-30 transition-opacity duration-300 z-10 mix-blend-color-dodge"
+                  style={{
+                    background: `radial-gradient(circle 120px at ${coords.glareX}% ${coords.glareY}%, rgba(255,107,0,0.5), transparent)`
                   }}
                 />
               </div>
 
-              {/* Floating Territorial Meta Info Label Badge in terracotta */}
-              <div className="absolute -left-5 top-1/2 -translate-y-1/2 bg-[#B35D43] text-[#F7F5F2] p-5 px-3.5 shadow-xl z-20">
-                <div className="vertical-label uppercase tracking-[0.4em] text-[8px] font-bold">Featured / 2026</div>
+              {/* Floating Territorial Meta Info Label Badge in vibrant Orange */}
+              <div 
+                className="absolute -left-5 top-1/2 -translate-y-1/2 bg-gradient-to-b from-[#FF6B00] to-[#E05E00] text-[#0E0E10] py-5 px-3.5 shadow-xl z-20 border border-[#FF6B00]/30 rounded-lg transition-transform duration-500"
+                style={{ 
+                  transform: 'translateY(-50%) translateZ(40px)',
+                  transformStyle: 'preserve-3d'
+                }}
+              >
+                <div className="vertical-label uppercase tracking-[0.42em] text-[8px] font-black font-mono">
+                  Featured / 2026
+                </div>
               </div>
 
-              {/* Minimal framing border */}
-              <div className="absolute -inset-3 border border-[#1A1A1A]/5 pointer-events-none -z-10" />
+              {/* Glass glowing ambient light behind portrait */}
+              <div 
+                className="absolute -inset-1.5 bg-[#FF6B00]/10 rounded-2xl filter blur-md -z-10 transition-all duration-500 group-hover:bg-[#FF6B00]/20 group-hover:blur-xl" 
+                style={{ transform: 'translateZ(-10px)' }}
+              />
             </motion.div>
           </div>
 
-          {/* Copy Writing & Greeting - Stylized with Asymmetric Serif / playfair structures */}
+          {/* Copy Writing & Greeting - Staggered Slide Reveals */}
           <div className="col-span-1 lg:col-span-7 text-center lg:text-left flex flex-col justify-center">
+            
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -15 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
+              className="flex items-center justify-center lg:justify-start gap-2 mb-4"
             >
-              <h6 className="text-[#B35D43] text-xs uppercase tracking-[0.4em] font-semibold mb-4">
-                hi there !
-              </h6>
+              <Sparkles className="w-4 h-4 text-[#FF6B00] animate-pulse" />
+              <span className="text-[#FF6B00] text-xs uppercase tracking-[0.45em] font-black font-mono">
+                HI THERE ! Welcome
+              </span>
             </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <h1 className="text-5xl sm:text-6xl lg:text-[100px] font-bold leading-[0.85] tracking-tighter serif mb-6">
+ 
+            <div className="overflow-hidden mb-6">
+              <motion.h1
+                initial={{ opacity: 0, y: 60 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="text-5xl sm:text-7xl lg:text-[90px] font-extrabold leading-[0.9] tracking-tighter serif"
+              >
                 Aron<br />
-                <span className="italic font-normal text-[#B35D43]">{personalInfo.lastName}</span>
-              </h1>
-            </motion.div>
+                <span className="italic font-normal text-[#FF6B00] drop-shadow-[0_0_20px_rgba(255,107,0,0.2)]">
+                  {personalInfo.lastName}
+                </span>
+              </motion.h1>
+            </div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -81,22 +203,23 @@ export default function HomeSection({ onNavigateToAbout }: HomeSectionProps) {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="mb-6"
             >
-              <p className="text-xs uppercase tracking-[0.25em] text-[#1A1A1A]/70 font-semibold leading-relaxed">
-                Full-Stack Developer & <br className="hidden sm:inline" /> Creative Interaction Designer
-              </p>
+              <h2 className="text-xs sm:text-sm uppercase tracking-[0.3em] text-neutral-400 font-bold font-mono leading-relaxed">
+                {personalInfo.role}
+              </h2>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
+              className="mb-8"
             >
-              <p className="text-[#1A1A1A]/60 text-sm sm:text-[15px] leading-relaxed max-w-md mb-8 mx-auto lg:mx-0 font-normal">
+              <p className="text-neutral-400 text-sm sm:text-[15px] leading-relaxed max-w-md mx-auto lg:mx-0 font-normal">
                 {personalInfo.bio}
               </p>
             </motion.div>
 
-            {/* Editorial Action Link Button */}
+            {/* Glowing Glassmorphic Action Button */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -106,11 +229,11 @@ export default function HomeSection({ onNavigateToAbout }: HomeSectionProps) {
               <button
                 id="cta-about-btn"
                 onClick={onNavigateToAbout}
-                className="group flex items-center justify-between gap-6 px-8 py-3.5 bg-[#1A1A1A] border border-[#1A1A1A] text-[#F7F5F2] hover:bg-transparent hover:text-[#1A1A1A] rounded-none font-bold uppercase text-[10px] tracking-[0.2em] relative overflow-hidden transition-all duration-300 cursor-pointer shadow-md"
+                className="group flex items-center justify-between gap-6 pl-8 pr-2.5 py-2.5 bg-white/5 border border-white/10 hover:border-[#FF6B00]/60 text-[#F7F5F2] rounded-full font-bold uppercase text-[10px] tracking-[0.25em] relative overflow-hidden transition-all duration-300 shadow-lg backdrop-blur-md cursor-pointer"
               >
                 <span>Read Biography</span>
-                <span className="p-1 px-1.5 bg-[#B35D43] text-white rounded-none transition-transform duration-300 group-hover:translate-x-1">
-                  <ArrowRight className="w-3 h-3" />
+                <span className="p-2.5 bg-[#FF6B00] text-[#0E0E10] rounded-full transition-transform duration-300 group-hover:translate-x-1 group-hover:bg-[#FF802B]">
+                  <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </span>
               </button>
             </motion.div>
@@ -121,3 +244,4 @@ export default function HomeSection({ onNavigateToAbout }: HomeSectionProps) {
     </section>
   );
 }
+

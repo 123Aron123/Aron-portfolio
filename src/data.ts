@@ -13,7 +13,7 @@ export const personalInfo: PersonalInfo = {
   age: 26,
   nationality: "Ethiopian",
   freelance: "Available",
-  address: "Mekelle, Ethiopia",
+  address: "Addis Ababa, Ethiopia",
   phone: "+251 996 747 062",
   email: "arongebrut@gmail.com",
   linkedin: "Aron Gebru",
@@ -29,6 +29,9 @@ export const skills: Skill[] = [
   { name: "CSS", percentage: 90, color: "#ffb400" },
   { name: "JavaScript", percentage: 85, color: "#ffb400" },
   { name: "React", percentage: 85, color: "#ffb400" },
+  { name: "Next.js", percentage: 70, color: "#ffb400" },
+  { name: "Three.js", percentage: 60, color: "#ffb400" },
+  { name: "MERN", percentage: 60, color: "#ffb400" },
   { name: "WordPress", percentage: 85, color: "#ffb400" },
   { name: "PHP", percentage: 80, color: "#ffb400" },
   { name: "jQuery", percentage: 75, color: "#ffb400" },
@@ -65,72 +68,62 @@ export const timeline: TimelineItem[] = [
 export const projects: ProjectItem[] = [
   {
     id: "proj-1",
-    title: "Headless E-Commerce System",
-    category: "Web Dev",
-    mediaType: "image",
-    client: "Global Commerce Group",
-    languagesUsed: ["React", "Tailwind CSS", "Vite"],
-    description: "A gorgeous modern web front-end optimized for instant content delivery, absolute accessibility, and high-frequency visual response times. Built to support custom payment gateways and full theme customizations.",
+    title: "Mattan Precision Engineering",
+    category: "Full Stack",
+    mediaType: "slider",
+    client: "Mattan Precision Eng.",
+    languagesUsed: ["React", "Three.js", "Tailwind CSS", "Vite"],
+    description: "A high-end web application designed for a digital-first metrology and additive manufacturing facility. It features robust engineering process showcases, interactive dark/light technical aesthetics, a precision materials gallery, and fully-responsive layout designs.",
     demoUrl: "https://github.com/123Aron123/protofol",
-    mediaUrls: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"]
+    mediaUrls: [
+      "/src/assets/images/mattan_home.png",
+      "/src/assets/images/mattan_process.png",
+      "/src/assets/images/mattan_gallery.png"
+    ]
   },
   {
     id: "proj-2",
-    title: "Smart Business Analytics",
-    category: "Analytics",
-    mediaType: "youtube",
-    client: "Velocity Analytics LLC",
-    languagesUsed: ["TypeScript", "Recharts", "Node.js"],
-    description: "An elegant dark dashboard displaying high-frequency telemetry metrics using fluid SVG charting libraries, real-time alert logs, and modular draggable bento widgets.",
-    demoUrl: "https://youtu.be/dQw4w9WgXcQ",
-    mediaUrls: ["https://www.youtube.com/embed/dQw4w9WgXcQ"]
+    title: "Bingo 75 Caller & Manual Tracker",
+    category: "Web Dev",
+    mediaType: "slider",
+    client: "Bingo Alula",
+    languagesUsed: ["React", "Vite", "Tailwind CSS"],
+    description: "An intuitive, real-time interactive bingo helper and manual tracking application. Equips callers with instant card marking triggers, automatic pattern checking algorithms, and high-contrast digital layouts to streamline game operations.",
+    demoUrl: "https://github.com/123Aron123/protofol",
+    mediaUrls: [
+      "/src/assets/images/bingo_tracker_1.png",
+      "/src/assets/images/bingo_tracker_2.png"
+    ]
   },
   {
     id: "proj-3",
-    title: "Interactive Travel Guide",
-    category: "Design",
+    title: "StockFlow Inventory Control",
+    category: "Full Stack",
     mediaType: "slider",
-    client: "Voyage International",
-    languagesUsed: ["Figma", "HTML", "CSS"],
-    description: "A showcase travel experience page built around organic fullscreen animations, structural cards overlays, and tactile navigation controls designed exclusively for mobile responsive touchpoints.",
+    client: "Enterprise Logistics Corp",
+    languagesUsed: ["React", "Node.js", "Express", "Tailwind CSS"],
+    description: "A professional and lightning-fast stock management suite. Engineered to support live transaction dashboard metrics, atomic status updates, multi-user role configurations, and clean light/dark theme presets.",
     demoUrl: "https://github.com/123Aron123/protofol",
     mediaUrls: [
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+      "/src/assets/images/stock_dashboard.png",
+      "/src/assets/images/stock_dashboard_light.png",
+      "/src/assets/images/stock_login.png",
+      "/src/assets/images/stock_admin.png"
     ]
   },
   {
     id: "proj-4",
-    title: "Creative Interactive Playground",
-    category: "UI/UX Design",
-    mediaType: "image",
-    client: "Lab Experiments",
-    languagesUsed: ["React", "Motion", "Tailwind"],
-    description: "An experimental web interface displaying smooth spring-physics based animation curves, custom scroll triggers, and fluid mouse interaction nodes on an immersive canvas.",
+    title: "Honey From The Mountain E-Commerce",
+    category: "Design & UI",
+    mediaType: "slider",
+    client: "Mountain Beekeeping Co-op",
+    languagesUsed: ["Figma", "HTML5", "CSS3", "JavaScript"],
+    description: "A beautiful, editorial e-commerce showcase built for organic honey producers. Incorporates rich visual slider components, clean informational tabs, contact channels, and a warm rustic palette to establish a strong brand identity.",
     demoUrl: "https://github.com/123Aron123/protofol",
-    mediaUrls: ["https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=800&q=80"]
-  },
-  {
-    id: "proj-5",
-    title: "Developer Workstation Video Teaser",
-    category: "Production",
-    mediaType: "video",
-    client: "Apex Tech Inc.",
-    languagesUsed: ["Adobe Premier", "After Effects"],
-    description: "A short, beautiful, high-contrast promotional video showing creative workspaces and web engineering workflows, integrated into an ultra-fast HTML5 background player.",
-    demoUrl: "https://github.com/123Aron123/protofol",
-    mediaUrls: ["https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-his-computer-34281-large.mp4"]
-  },
-  {
-    id: "proj-6",
-    title: "Sleek Personal Tasks Canvas",
-    category: "Web Dev",
-    mediaType: "image",
-    client: "Self Project",
-    languagesUsed: ["JavaScript", "HTML", "CSS"],
-    description: "A minimal, key-value persisted task blackboard structured with custom columns, custom tags sorting, and high-contrast color codes to prioritize web development pipelines.",
-    demoUrl: "https://github.com/123Aron123/protofol",
-    mediaUrls: ["https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80"]
+    mediaUrls: [
+      "/src/assets/images/honey_home.png",
+      "/src/assets/images/honey_info.png",
+      "/src/assets/images/honey_contact.png"
+    ]
   }
 ];

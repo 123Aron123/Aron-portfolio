@@ -7,6 +7,38 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+/* Base scrollbar configuration for premium dark feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0E0E10;
+}
+::-webkit-scrollbar-thumb {
+  background: #2D2D34;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF6B00;
+}
+
+/* Glassmorphism containers with subtle grey glass and orange borders */
+.glass-panel {
+  background: rgba(22, 22, 26, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.glass-panel-orange {
+  background: rgba(255, 107, 0, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 107, 0, 0.15);
+  box-shadow: 0 4px 24px 0 rgba(255, 107, 0, 0.05);
+}
+
 /* Custom class for vertical rotated typography labels */
 .vertical-label {
   writing-mode: vertical-rl;
@@ -15,7 +47,7 @@
 
 /* Structural Grid lines overlay */
 .editorial-line {
-  background-color: rgba(26, 26, 26, 0.08);
+  background-color: rgba(255, 107, 0, 0.08);
 }
 
 @keyframes cursor-blink {
@@ -27,3 +59,34 @@
   animation: cursor-blink 1s infinite;
 }
 
+/* Custom cursor hide rules for desktop hover states */
+@media (pointer: fine) {
+  .custom-cursor-active,
+  .custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+/* Ensure interactive elements have standard cursors when custom cursor is inactive */
+.cursor-pointer,
+a,
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/* 3D and Reveal Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Animated gradient background */
+.animated-bg {
+  background: radial-gradient(circle at 10% 20%, rgba(255, 107, 0, 0.08) 0%, transparent 45%),
+              radial-gradient(circle at 90% 80%, rgba(142, 142, 147, 0.08) 0%, transparent 50%),
+              #0E0E10;
+}

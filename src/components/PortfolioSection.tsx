@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ExternalLink, ChevronLeft, ChevronRight, Play, Eye } from 'lucide-react';
@@ -36,9 +31,9 @@ export default function PortfolioSection() {
   };
 
   return (
-    <section className="relative w-full min-h-screen py-24 bg-[#F7F5F2] text-[#1A1A1A] overflow-hidden">
+    <section className="relative w-full min-h-screen py-24 bg-transparent text-[#F7F5F2] overflow-hidden">
       {/* Background decoration watermark text */}
-      <div className="absolute left-6 top-1/3 text-[10vw] font-bold serif opacity-[0.02] select-none pointer-events-none tracking-widest leading-none hidden xl:block">
+      <div className="absolute left-6 top-1/3 text-[10vw] font-bold serif opacity-[0.015] text-[#FF6B00] select-none pointer-events-none tracking-widest leading-none hidden xl:block">
         WORKS
       </div>
 
@@ -47,22 +42,23 @@ export default function PortfolioSection() {
         {/* Section Header */}
         <div className="text-center mb-12 relative">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider mb-2 serif">
-            MY <span className="text-[#B35D43] italic font-normal">PORTFOLIO</span>
+            MY <span className="text-[#FF6B00] italic font-normal drop-shadow-[0_0_15px_rgba(255,107,0,0.15)]">PORTFOLIO</span>
           </h2>
-          <div className="w-16 h-[1px] bg-[#1A1A1A]/30 mx-auto mt-4" />
+          <div className="w-16 h-[1px] bg-white/10 mx-auto mt-4" />
         </div>
 
-        {/* Tab Category Filters */}
+        {/* Tab Category Filters (Glassmorphic Pills) */}
         <div className="flex flex-wrap justify-center items-center gap-3 mb-12">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className="px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer border"
+              className="px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 cursor-pointer border backdrop-blur-md shadow-sm"
               style={{
-                backgroundColor: activeCategory === category ? '#B35D43' : 'transparent',
-                color: activeCategory === category ? '#F7F5F2' : '#1A1A1A',
-                borderColor: activeCategory === category ? '#B35D43' : 'rgba(26, 26, 26, 0.15)'
+                backgroundColor: activeCategory === category ? '#FF6B00' : 'rgba(255, 255, 255, 0.03)',
+                color: activeCategory === category ? '#0E0E10' : '#F7F5F2',
+                borderColor: activeCategory === category ? '#FF6B00' : 'rgba(255, 255, 255, 0.08)',
+                boxShadow: activeCategory === category ? '0 0 15px rgba(255, 107, 0, 0.25)' : 'none'
               }}
             >
               {category}
@@ -85,46 +81,51 @@ export default function PortfolioSection() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4 }}
                 onClick={() => handleOpenProject(project)}
-                className="group relative h-64 rounded-none overflow-hidden cursor-pointer shadow-md border border-[#1A1A1A]/10 bg-[#1A1A1A]"
+                className="group relative h-64 rounded-2xl overflow-hidden shadow-2xl glass-panel p-2 border-white/10 cursor-pointer"
               >
-                {/* Image thumb */}
-                <img
-                  src={project.mediaUrls[0]}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=80';
-                  }}
-                />
+                <div className="w-full h-full rounded-xl overflow-hidden relative bg-neutral-900">
+                  {/* Image thumb */}
+                  <img
+                    src={project.mediaUrls[0]}
+                    alt={project.title}
+                    className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=80';
+                    }}
+                  />
 
-                {/* Terracotta Graphic Overlay Hover Card */}
-                <div className="absolute inset-0 bg-[#B35D43]/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 z-10">
-                  <div className="w-11 h-11 rounded-none bg-[#F7F5F2] text-[#B35D43] flex items-center justify-center mb-3 shadow-md transform translate-y-3 group-hover:translate-y-0 transition-all duration-300">
-                    {project.mediaType === 'image' && <Eye className="w-4.5 h-4.5" />}
-                    {project.mediaType === 'youtube' && <Play className="w-4.5 h-4.5 fill-current" />}
-                    {project.mediaType === 'video' && <Play className="w-4.5 h-4.5 fill-current" />}
-                    {project.mediaType === 'slider' && <ChevronRight className="w-4.5 h-4.5" />}
+                  {/* Dark-to-Orange Gradient Glass Overlay on Hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-[#FF6B00]/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center p-6 z-10 backdrop-blur-[2px]">
+                    <div className="w-12 h-12 rounded-full bg-[#FF6B00] text-[#0E0E10] flex items-center justify-center mb-3 shadow-[0_0_15px_rgba(255,107,0,0.5)] transform translate-y-3 group-hover:translate-y-0 transition-all duration-300">
+                      {project.mediaType === 'image' && <Eye className="w-5 h-5 stroke-[2.5]" />}
+                      {project.mediaType === 'youtube' && <Play className="w-5 h-5 fill-current stroke-[2.5]" />}
+                      {project.mediaType === 'video' && <Play className="w-5 h-5 fill-current stroke-[2.5]" />}
+                      {project.mediaType === 'slider' && <ChevronRight className="w-5 h-5 stroke-[2.5]" />}
+                    </div>
+                    <h3 className="text-[#F7F5F2] text-[15px] font-bold uppercase tracking-[0.15em] text-center leading-tight">
+                      {project.title}
+                    </h3>
+                    <span className="text-[#FF6B00] text-[9px] font-bold uppercase tracking-widest mt-1.5 font-mono">
+                      {project.category}
+                    </span>
                   </div>
-                  <h3 className="text-[#F7F5F2] text-[15px] font-bold uppercase tracking-widest text-center leading-tight">
-                    {project.title}
-                  </h3>
-                  <span className="text-[#F7F5F2]/80 text-[9px] font-bold uppercase tracking-widest mt-1 font-mono">
-                    {project.category}
-                  </span>
                 </div>
+
+                {/* Glass glowing subtle outer border on hover */}
+                <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-[#FF6B00]/20 transition-colors duration-300 pointer-events-none" />
               </motion.div>
             ))}
           </AnimatePresence>
         </motion.div>
 
-        {/* Modal Project Lightbox Panel in Editorial Layout */}
+        {/* Modal Project Lightbox Panel (Glassmorphic Overlay) */}
         <AnimatePresence>
           {selectedProject && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-[#F7F5F2]/95 backdrop-blur-md flex items-center justify-center z-50 p-4 overflow-y-auto"
+              className="fixed inset-0 bg-black/80 backdrop-blur-xl flex items-center justify-center z-50 p-4 overflow-y-auto"
             >
               {/* Main lightbox container */}
               <motion.div
@@ -132,18 +133,18 @@ export default function PortfolioSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="bg-[#F0EDE9] border border-[#1A1A1A]/15 rounded-none w-full max-w-5xl h-auto lg:max-h-[90vh] overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative shadow-2xl text-[#1A1A1A]"
+                className="bg-neutral-900/90 glass-panel border-white/10 rounded-3xl w-full max-w-5xl h-auto lg:max-h-[90vh] overflow-y-auto lg:overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative shadow-2xl text-[#F7F5F2] cursor-default"
               >
-                {/* Close Button top-right */}
+                {/* Close Button top-right (illuminate core orange circle) */}
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="absolute right-4 top-4 lg:right-6 lg:top-6 z-30 p-2.5 bg-[#1A1A1A] hover:bg-[#B35D43] text-[#F7F5F2] border-0 rounded-none transition cursor-pointer shadow-md"
+                  className="absolute right-4 top-4 lg:right-6 lg:top-6 z-30 p-2.5 bg-[#FF6B00] hover:bg-[#FF802B] text-[#0E0E10] border-0 rounded-full transition cursor-pointer shadow-md"
                 >
-                  <X className="w-4.5 h-4.5" />
+                  <X className="w-4.5 h-4.5 stroke-[2.5]" />
                 </button>
 
                 {/* Left Side: Media Window */}
-                <div className="col-span-1 lg:col-span-7 bg-[#1A1A1A] min-h-[300px] lg:h-[90vh] flex items-center justify-center relative select-none">
+                <div className="col-span-1 lg:col-span-7 bg-neutral-950 min-h-[250px] sm:min-h-[350px] lg:h-[90vh] flex items-center justify-center relative select-none">
                   
                   {/* Option 1: Image type */}
                   {selectedProject.mediaType === 'image' && (
@@ -197,7 +198,7 @@ export default function PortfolioSection() {
                       {/* Previous trigger */}
                       <button
                         onClick={(e) => { e.stopPropagation(); handlePrevSlide(selectedProject.mediaUrls); }}
-                        className="absolute left-4 p-2 bg-[#1A1A1A]/80 hover:bg-[#B35D43] text-[#F7F5F2] rounded-none transition cursor-pointer z-10"
+                        className="absolute left-4 p-2 bg-black/60 hover:bg-[#FF6B00] text-white hover:text-[#0E0E10] border border-white/10 hover:border-[#FF6B00] rounded-full transition cursor-pointer z-10"
                       >
                         <ChevronLeft className="w-4 h-4" />
                       </button>
@@ -205,19 +206,20 @@ export default function PortfolioSection() {
                       {/* Next trigger */}
                       <button
                         onClick={(e) => { e.stopPropagation(); handleNextSlide(selectedProject.mediaUrls); }}
-                        className="absolute right-4 p-2 bg-[#1A1A1A]/80 hover:bg-[#B35D43] text-[#F7F5F2] rounded-none transition cursor-pointer z-10"
+                        className="absolute right-4 p-2 bg-black/60 hover:bg-[#FF6B00] text-white hover:text-[#0E0E10] border border-white/10 hover:border-[#FF6B00] rounded-full transition cursor-pointer z-10"
                       >
                         <ChevronRight className="w-4 h-4" />
                       </button>
 
                       {/* Slider Index Dots */}
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 bg-black/40 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-md">
                         {selectedProject.mediaUrls.map((_, dotIdx) => (
                           <div
                             key={dotIdx}
-                            className="w-2.5 h-2.5 rounded-none transition"
+                            className="w-2 h-2 rounded-full transition-colors duration-300"
                             style={{
-                              backgroundColor: currentSlideIndex === dotIdx ? '#B35D43' : 'rgba(255, 255, 255, 0.3)'
+                              backgroundColor: currentSlideIndex === dotIdx ? '#FF6B00' : 'rgba(255, 255, 255, 0.25)',
+                              boxShadow: currentSlideIndex === dotIdx ? '0 0 8px #FF6B00' : 'none'
                             }}
                           />
                         ))}
@@ -227,33 +229,33 @@ export default function PortfolioSection() {
                 </div>
 
                 {/* Right Side: Description Info box */}
-                <div className="col-span-1 lg:col-span-5 p-6 lg:p-8 flex flex-col justify-between overflow-y-auto max-h-[90vh]">
+                <div className="col-span-1 lg:col-span-5 p-6 lg:p-8 flex flex-col justify-between lg:overflow-y-auto lg:max-h-[90vh]">
                   <div className="mt-8">
-                    <h3 className="text-2xl font-bold uppercase text-[#B35D43] mb-2 leading-tight serif italic">
+                    <h3 className="text-2xl font-bold uppercase text-[#FF6B00] mb-2 leading-tight serif italic drop-shadow-[0_0_15px_rgba(255,107,0,0.15)]">
                       {selectedProject.title}
                     </h3>
-                    <span className="inline-block px-3 py-1 bg-[#B35D43] text-white text-[9px] font-bold uppercase tracking-widest mb-6 font-mono">
+                    <span className="inline-block px-3 py-1 bg-white/5 border border-white/10 text-[#FF6B00] text-[9px] font-bold uppercase tracking-widest mb-6 font-mono rounded-full">
                       {selectedProject.category}
                     </span>
 
-                    <h4 className="text-[10px] uppercase font-bold text-[#1A1A1A]/40 tracking-widest mb-2 font-mono">
+                    <h4 className="text-[10px] uppercase font-bold text-neutral-400 tracking-widest mb-2 font-mono">
                       Brief / Details
                     </h4>
-                    <p className="text-xs sm:text-sm text-[#1A1A1A]/80 leading-relaxed font-normal mb-6">
+                    <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal mb-6">
                       {selectedProject.description}
                     </p>
 
                     {/* Metadata items list */}
-                    <div className="space-y-3.5 border-t border-[#1A1A1A]/10 pt-6 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-[#1A1A1A]/50 font-mono text-[10px] uppercase">Client:</span>
-                        <span className="text-[#1A1A1A] font-semibold">{selectedProject.client || 'N/A'}</span>
+                    <div className="space-y-3.5 border-t border-white/5 pt-6 text-xs">
+                      <div className="flex justify-between items-center">
+                        <span className="text-neutral-400 font-mono text-[10px] uppercase">Client:</span>
+                        <span className="text-white font-semibold">{selectedProject.client || 'N/A'}</span>
                       </div>
                       <div className="flex justify-between items-start gap-4">
-                        <span className="text-[#1A1A1A]/50 font-mono text-[10px] uppercase">Languages:</span>
+                        <span className="text-neutral-400 font-mono text-[10px] uppercase mt-1">Tech Stack:</span>
                         <div className="flex flex-wrap gap-1 justify-end">
                           {selectedProject.languagesUsed?.map(lang => (
-                            <span key={lang} className="px-2 py-0.5 bg-[#F7F5F2] text-[#1A1A1A]/80 text-[10px] rounded-none border border-[#1A1A1A]/10 font-mono">
+                            <span key={lang} className="px-2 py-0.5 bg-white/5 text-[#FF6B00] text-[10px] rounded-full border border-white/10 font-mono">
                               {lang}
                             </span>
                           ))}
@@ -263,15 +265,15 @@ export default function PortfolioSection() {
                   </div>
 
                   {/* Action Link button bottom */}
-                  <div className="border-t border-[#1A1A1A]/10 pt-6 mt-8 flex justify-end">
+                  <div className="border-t border-white/5 pt-6 mt-8 flex justify-end">
                     {selectedProject.demoUrl && (
                       <a
                         href={selectedProject.demoUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center gap-2 px-5 py-3 bg-[#1A1A1A] hover:bg-[#B35D43] text-[#F7F5F2] font-bold text-[10px] uppercase tracking-widest rounded-none transition shadow-sm"
+                        className="flex items-center gap-2 px-6 py-3 bg-[#FF6B00] hover:bg-[#FF802B] text-[#0E0E10] font-bold text-[10px] uppercase tracking-[0.2em] rounded-full transition shadow-[0_0_15px_rgba(255,107,0,0.2)]"
                       >
-                        Launch Preview <ExternalLink className="w-3 h-3" />
+                        Launch Preview <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     )}
                   </div>
@@ -286,3 +288,4 @@ export default function PortfolioSection() {
     </section>
   );
 }
+
